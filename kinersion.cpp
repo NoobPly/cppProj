@@ -10,16 +10,19 @@ using namespace std;
 
 int kInverse(vector<int> nums, int k){
 
+    //tạo graph
     unordered_map<int, unordered_map<int,int>> graph;
     int n = nums.size();
 
     for (int i = n-1; i>=0; i--){
 
+        //tất cả mọi điểm đều có 1 cách để tiến 0 bước
         graph[i][0] = 1;
 
         for (int j = i+1; j<n; j++){
             if (nums[i] > nums[j]){
                 for (auto p : graph[j]){
+                    //cộng bước của những phần tử (j) nhỏ hơn (i)
                     graph[i][p.first + 1] += p.second;
                 }
             }
@@ -28,7 +31,7 @@ int kInverse(vector<int> nums, int k){
 
     int total = 0;
     for (int i = 0; i<n; i++){
-
+        //tìm những phần tử mà có số cách đi k-1 bước, rồi cộng số bước đấy vào total
         for (auto p : graph[i]){
             if (p.first == k-1){
                 total += graph[i][p.first];
